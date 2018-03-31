@@ -1,0 +1,20 @@
+enclave {
+	from "sgx_tsgxssl.edl" import *;
+
+    trusted { /* ECALL: Enclave Calls */
+        /* define ECALLs here. */
+		public int set_secret(
+			[in, size=certificate_data_size] const char* certificate_data,
+			size_t certificate_data_size,
+			[in, size=private_key_size] const char* private_key_data,
+			size_t private_key_size);
+		public size_t enc_sign([in, size=message_length] const char* message,
+			size_t message_length, size_t salt_length,
+			[out, size=estimated_envelope_size] char* signed_data, size_t estimated_envelope_size);
+		public void enc_clear();
+    };
+
+    untrusted { /* OCALL: Outside Calls */
+        /* define OCALLs here. */
+    };
+};
