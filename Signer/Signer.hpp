@@ -8,7 +8,7 @@ class Signer {
  protected:
   static std::string ReadFile(const char* path);
   virtual std::string Sign(const char* message_path,
-    std::size_t salt_length) const = 0;
+    const std::size_t salt_length) const = 0;
  public:
   virtual ~Signer() = default;
 };

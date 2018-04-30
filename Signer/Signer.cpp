@@ -12,7 +12,8 @@ std::string Signer::ReadFile(const char * path) {
   std::string str;
 
   file.seekg(0, std::ios::end);
-  str.reserve(file.tellg());
+  const std::size_t file_length = file.tellg();
+  str.reserve(file_length);
   file.seekg(0, std::ios::beg);
 
   str.assign((std::istreambuf_iterator<char>(file)),

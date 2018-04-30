@@ -34,23 +34,18 @@ ESigner::ESigner(const char* certificate_path, const char* private_key_path) {
   }
 
   // Step 3: save the launch token if it is updated
-  if (!updated || fp == nullptr) {
-    // if token is not updated, or file handler is invalid, do not save
-    if (fp != nullptr) {
-      fclose(fp);
-    }
-  } else {
+  if (updated) {
     fp = freopen(this->kTokenFile, "wb", fp);
     if (fp == nullptr) {
       throw std::runtime_error("Failed to save launch token.");
     }
-    const size_t write_num = fwrite(launch_token, 1,
+    const std::size_t write_num = fwrite(launch_token, 1,
       sizeof(sgx_launch_token_t), fp);
     if (write_num != sizeof(sgx_launch_token_t)) {
       throw std::runtime_error("Failed to save launch token.");
     }
-    fclose(fp);
   }
+  fclose(fp);
 
   int success;
   const auto&& certificate = Signer::ReadFile(certificate_path);
@@ -65,7 +60,7 @@ ESigner::ESigner(const char* certificate_path, const char* private_key_path) {
 }
 
 std::string ESigner::Sign(const char * message_path,
-  std::size_t salt_length) const {
+  const std::size_t salt_length) const {
   BIO* envelope = nullptr;
   const auto&& message = Signer::ReadFile(message_path);
 
@@ -75,6 +70,7 @@ std::string ESigner::Sign(const char * message_path,
     message.length(), salt_length, signed_data, this->estimated_envelope_size_);
 
   std::string finalized_signed_data(signed_data, signed_data_length);
+  
   delete[] signed_data;
   return finalized_signed_data;
 }

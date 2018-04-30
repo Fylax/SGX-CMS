@@ -25,10 +25,9 @@ size_t enc_sign(const char* message, size_t message_length, size_t salt_length,
     char* signed_data, size_t estimated_envelope_data) {
     const int flags = CMS_BINARY | CMS_PARTIAL | CMS_KEY_PARAM
         | CMS_DETACHED | CMS_NOSMIMECAP;
-    const auto mem = BIO_new(BIO_s_mem());
-    BIO_write(mem, message, message_length);
+    const auto mem = BIO_new_mem_buf(message, message_length);
 
-    CMS_ContentInfo* data = CMS_sign(nullptr, nullptr, nullptr, mem, flags);
+    CMS_ContentInfo* data = CMS_sign(nullptr, nullptr, nullptr, nullptr, flags);
     CMS_SignerInfo* sinfo = CMS_add1_signer(data, certificate, private_key,
         digest_algorithm, flags);
     EVP_PKEY_CTX* pkey_ctx = CMS_SignerInfo_get0_pkey_ctx(sinfo);

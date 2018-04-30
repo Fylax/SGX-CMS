@@ -8,7 +8,7 @@
 
 class ESigner: public Signer {
  private:
-  const char* kEnclaveFile = R"(C:\Users\nicoc\Documents\Visual Studio 2015\Projects\ESigner\Debug\ESigner.signed.dll)";
+  const char* kEnclaveFile = "ESigner.signed.dll";
   const char* kTokenFile = "token";
   int estimated_envelope_size_;
   sgx_enclave_id_t enclave_id_;
@@ -16,7 +16,7 @@ class ESigner: public Signer {
  public:
   ESigner(const char* certificate_path, const char* private_key_path);
   std::string Sign(const char * message_path,
-    std::size_t salt_length) const override;
+    const std::size_t salt_length) const override;
   ~ESigner();
 };
 

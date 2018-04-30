@@ -8,13 +8,13 @@
 
 class USigner: public Signer {
  private:
-  X509* certificate;
-  EVP_PKEY* private_key;
-  EVP_MD* digest_algorithm;
+  X509* certificate_;
+  EVP_PKEY* private_key_;
+  EVP_MD* digest_algorithm_;
  public:
   USigner(const char* certificate_path, const char* private_key_path);
   std::string Sign(const char * message_path,
-    std::size_t salt_length) const override;
+    const std::size_t salt_length) const override;
   ~USigner();
 };
 
