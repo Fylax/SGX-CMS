@@ -1,23 +1,20 @@
-#include "USigner.hpp"
+#include "ESigner.hpp"
 #include <fstream>
-#include <filesystem>
 
-
-namespace fs = std::experimental::filesystem;
 int main(int argc, char** argv) {
-  if(argc < 4)
+  if(argc < 5)
   {
-    printf("Usage: %s certificate key sign_files_dir", argv[0]);
+    printf("Usage: %s certificate key input_file output_file\n", argv[0]);
+	exit(EXIT_FAILURE);
   }
   
-  USigner esigner(argv[1], argv[2]);
-  for (auto& p : fs::directory_iterator(argv[3]))
-  {
-    std::string&& sign = esigner.Sign(p.path().generic_string().c_str(), 8);
-  }
+  
+  // salt length as argv?
+  ESigner esigner(argv[1], argv[2]);
+  std::string&& sign = esigner.Sign(argv[3], 8);
 
-  //std::ofstream out(signed_path, std::ios::out | std::ios::binary);
-  //out << sign;
-  //out.close();
-  return 0;
+  std::ofstream out(argv[4], std::ios::out | std::ios::binary);
+  out << sign;
+  out.close();
+  exit(EXIT_SUCCESS);
 }

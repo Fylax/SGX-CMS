@@ -61,7 +61,6 @@ ESigner::ESigner(const char* certificate_path, const char* private_key_path) {
 
 std::string ESigner::Sign(const char * message_path,
   const std::size_t salt_length) const {
-  BIO* envelope = nullptr;
   const auto&& message = Signer::ReadFile(message_path);
 
   size_t signed_data_length;

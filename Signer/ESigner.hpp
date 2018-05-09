@@ -8,7 +8,11 @@
 
 class ESigner: public Signer {
  private:
+#ifdef _WIN32
   const char* kEnclaveFile = "ESigner.signed.dll";
+#else
+  const char* kEnclaveFile = "ESigner.signed.so";
+#endif
   const char* kTokenFile = "token";
   int estimated_envelope_size_;
   sgx_enclave_id_t enclave_id_;

@@ -26,7 +26,7 @@ std::string USigner::Sign(const char * message_path,
         | CMS_DETACHED | CMS_NOSMIMECAP;
 
     const auto mem = BIO_new_mem_buf(message.c_str(), message.length());
-    
+
     CMS_ContentInfo* data = CMS_sign(nullptr, nullptr, nullptr, nullptr, flags);
     CMS_SignerInfo* sinfo = CMS_add1_signer(data, this->certificate_,
         this->private_key_, this->digest_algorithm_, flags);
